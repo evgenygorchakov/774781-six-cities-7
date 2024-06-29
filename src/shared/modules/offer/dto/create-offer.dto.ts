@@ -6,7 +6,7 @@ import {
   PropertyType,
 } from '../../../types/index.js';
 
-export class createOfferDto {
+export class CreateOfferDto {
   public title: string;
   public description: string;
   public postDate: Date;

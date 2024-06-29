@@ -68,13 +68,13 @@ export class TSVFileReader extends EventEmitter implements FileReader {
   }
 
   private parseUser(
-    name: string,
+    firstName: string,
     email: string,
     avatarPath: string,
     password: string,
     userType: string
   ): User {
-    return { name, email, avatarPath, password, type: userType as UserType };
+    return { firstName, email, avatarPath, password, type: userType as UserType };
   }
 
   private parseCoordinates(latitude: string, longitude: string) {
