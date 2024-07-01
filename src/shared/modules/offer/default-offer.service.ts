@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/component.enum.js';
-import { DocumentType, types } from '@typegoose/typegoose';
+import { DocumentType, mongoose, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
 import { OfferService } from './offer-service.interface.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
@@ -29,10 +29,19 @@ export class DefaultOfferService implements OfferService {
     }
 
     return this.offerModel
-      .find()
-      .sort({ createdAt: SortType.Down })
-      .limit(limit)
-      .populate('userId')
+      .aggregate([
+        { $sort: { createdAt: SortType.Down } },
+        { $limit: limit },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user'
+          }
+        },
+        { $unwind: '$user' },
+      ])
       .exec();
   }
 
@@ -73,9 +82,24 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async findById(offerId: string): Promise<DocumentType<OfferEntity> | null> {
-    return this.offerModel
-      .findById(offerId)
-      .populate('userId')
+    const result = await this.offerModel
+      .aggregate([
+        {
+          $match: { _id: new mongoose.Types.ObjectId(offerId) }
+        },
+        {
+          $lookup: {
+            from: 'users',
+            localField: 'userId',
+            foreignField: '_id',
+            as: 'user'
+          }
+        },
+        { $unwind: '$user' },
+        { $limit: 1 },
+      ])
       .exec();
+
+    return result.length > 0 ? result[0] : null;
   }
 }
