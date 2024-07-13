@@ -1,0 +1,6 @@
+Offers
+## Get offers list
+GET http://localhost:4000/v1/offers HTTP/1.1
+Content-Type: application/json
+
+###
