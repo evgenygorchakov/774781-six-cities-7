@@ -8,7 +8,7 @@ import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/component.enum.js';
 import { UpdateUserDto } from './dto/update-user.dto.js';
 
-injectable();
+@injectable()
 export class DefaultUserService implements UserService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
