@@ -114,7 +114,7 @@ paths:
             default: 60
           description: Number of returned offers.
 
-  /v1/offers/{userId}:
+  /v1/offers/{id}:
     post:
       tags:
         - offers
@@ -236,7 +236,7 @@ components:
         amenities:
           type: array
           example: ['seat', 'Washer', 'Towels']
-        userId:
+        id:
           type: string
           example: 6329c3d6a04ab1061c6425ea
         latitude:
