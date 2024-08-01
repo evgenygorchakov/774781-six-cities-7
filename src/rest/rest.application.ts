@@ -71,7 +71,7 @@ export class RestApplication {
 
     this.logger.info('Init exception filters');
     await this.initExceptionFilters();
-    this.logger.info('Exception filters initialization compleated');
+    this.logger.info('Exception filters initialization completed');
 
     this.logger.info('Try to init server…');
     await this.initServer();
