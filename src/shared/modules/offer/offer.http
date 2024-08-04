@@ -35,10 +35,15 @@ Content-Type: application/json
     "Towels",
     "Fridge"
   ],
-  "userId": "66790794b447136cf6255baa",
+  "userId": "66aef419a5f1671e92563cfa",
   "latitude": 52.370216,
   "longitude": 4.895168,
   "commentCount": 0
 }
+
+###
+
+## Get offer by id
+GET http://localhost:4000/v1/offers/66ab7a5a09c3fa75a030b7a9 HTTP/1.1
 
 ###
