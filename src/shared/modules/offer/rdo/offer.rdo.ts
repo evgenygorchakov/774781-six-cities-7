@@ -1,4 +1,5 @@
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
+import { UserRdo } from '../../user/index.js';
 
 export class OfferRdo {
   @Expose()
@@ -43,8 +44,9 @@ export class OfferRdo {
   @Expose()
   public amenities: string[];
 
-  @Expose()
-  public userId: string;
+  @Expose({ name: 'user' })
+  @Type(() => UserRdo)
+  public user: UserRdo;
 
   @Expose()
   public latitude: number;
