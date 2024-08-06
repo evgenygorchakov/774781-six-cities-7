@@ -1,40 +1,49 @@
 openapi: 3.0.3
 info:
-  title: API Reference
-  description: List of resources and routes of "the Six Cities" server.
+  title: Six cities - OpenApi 3.0
+  description: Six Cities server resources.
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
   version: 2.0.0
 tags:
-  - name: users
-    description: User actions.
-  - name: offers
-    description: Offer actions.
-  - name: comments
-    description: Comment actions.
+  - name: user
+    description: Operations about user
+  - name: offer
+    description: Operations about offers
+  - name: comment
+    description: Operations about comments
 
 paths:
-  /v1/users/register:
+  /v1/user/register:
     post:
       tags:
-        - users
-      summary: User registration
-      description: Registers a new user.
+        - user
+      summary: Create user
+      description: Registers a new user
       requestBody:
-        description: Payload for creating a new user.
+        description: Created user object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/createUser'
+              $ref: '#/components/schemas/createUserRequest'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/createUserRequest'
+            application/x-www-form-urlencoded:
+              schema:
+                $ref: '#/components/schemas/createUserRequest'
         required: true
       responses:
         "201":
-          description: The user has been successfully registered. User object.
+          description: successful operation
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/user'
+                $ref: '#/components/schemas/User'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/User'
         "409":
           description: A user with this email already exists.
 
@@ -78,58 +87,119 @@ paths:
       summary: Delete to favorite
       description: Delete to favorite.
 
-  /v1/offers:
+  /v1/offer:
     post:
       tags:
-        - offers
-      summary: Create an offer
-      description: Create a new offer.
+        - offer
+      summary: Add a new offer
+      description: Add a new offer
       requestBody:
-        description: Payload for creating a new offer.
+        description: Create a new offer
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/offer'
+              $ref: '#/components/schemas/Offer'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Offer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Offer'
         required: true
       responses:
         "201":
-          description: The offer has been successfully created.
+          description: Successfully created
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/offer'
+                $ref: '#/components/schemas/Offer'
         "401":
-          description: Unauthorized.
+          description: Unauthorized
 
     get:
       tags:
-        - offers
-      summary: List offers
-      description: return a list of offers.
+        - offer
+      summary: Returns a list of offers
+      description: Return a list of offers
       parameters:
         - in: query
           name: limit
+          description: Number of offers
           schema:
             type: integer
             default: 60
-          description: Number of returned offers.
+      responses:
+        "200":
+          description: Returns offers within the limit
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Offer'
+        "401":
+          description: Unauthorized.
 
-  /v1/offers/{id}:
-    post:
+  /v1/offer/{id}:
+    put:
       tags:
-        - offers
-      summary: Update an offer
-      description: Update an exist offer.
+        - offer
+      summary: Update an existing offer
+      description: Update an existing offer by Id
+      requestBody:
+        description: Update an existent offer
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Offer'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Offer'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Offer'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '404':
+          description: Offer not found
+        "401":
+          description: Unauthorized
     get:
       tags:
-        - offers
-      summary: Detailed offer info
-      description: Get detailed information on the offer.
+        - offer
+      summary: Find offer by ID
+      description: Returns a single offer
     delete:
       tags:
-        - offers
-      summary: Delete an offer
-      description: Delete an exist offer.
+        - offer
+      summary: Deletes an offer
+      description: Delete an offer
+      parameters:
+        - name: id
+          in: path
+          description: Offer id to delete
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: No content
+        '404':
+          description: Offer not found
 
   /v1/offers/{id}/favorite:
     get:
@@ -168,30 +238,32 @@ paths:
 
 components:
   schemas:
-    createUser:
-      type: object
-      properties:
-        email:
-          type: string
-          example: natalia@gmail.com
-        firstname:
-          type: string
-          example: Natalia
-        password:
-          type: string
-          example: 123456
-
-    user:
+    User:
       type: object
       properties:
         id:
           type: string
           example: 6329c3d6a04ab1061c6425ea
+        firstName:
+          type: string
+          example: John
         email:
           type: string
-          example: natalia@gmail.com
+          example: john@email.com
+        password:
+          type: string
+          example: '12345'
+        avatarPath:
+          type: string
+          example: 'john.jpg'
+        type:
+          type: string
+          example: regular
+          enum:
+            - regular
+            - pro
 
-    offer:
+    Offer:
       type: object
       properties:
         title:
@@ -202,7 +274,7 @@ components:
           example: Wooden cabin with sea view located in the Danish nature.
         postDate:
           type: string
-          example: 2024-06-11T06:23:08.406Z
+          format: date-time
         city:
           type: string
           example: Cologne
@@ -211,6 +283,8 @@ components:
           example: preview.jpg
         photos:
           type: array
+          items:
+            type: string
           example: ['photo1.jpg', 'photo2.jpg']
         isPremium:
           type: boolean
@@ -235,13 +309,27 @@ components:
           example: 10500
         amenities:
           type: array
-          example: ['seat', 'Washer', 'Towels']
-        id:
-          type: string
-          example: 6329c3d6a04ab1061c6425ea
+          items:
+            type: string
+          example: 'Washer'
+        user:
+          $ref: '#/components/schemas/User'
         latitude:
           type: number
           example: 50.938361
         longitude:
           type: number
           example: 6.959974
+
+    createUserRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john@gmail.com
+        firstName:
+          type: string
+          example: John
+        password:
+          type: string
+          example: 123456
