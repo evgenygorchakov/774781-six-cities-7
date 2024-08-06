@@ -11,6 +11,7 @@ import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
 import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { ParamOfferId } from './type/param-offer-id.type.js';
+import { UpdateOfferDto } from './dto/update-offer.dto.js';
 
 @injectable()
 export class OfferController extends BaseController {
@@ -26,6 +27,7 @@ export class OfferController extends BaseController {
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
     this.addRoute({ path: '/:id', method: HttpMethod.Get, handler: this.showDetails });
     this.addRoute({ path: '/:id', method: HttpMethod.Delete, handler: this.delete });
+    this.addRoute({ path: '/:id', method: HttpMethod.Patch, handler: this.update });
   }
 
   public async index(_req: Request, res: Response) {
@@ -67,5 +69,19 @@ export class OfferController extends BaseController {
     }
 
     this.noContent(res, offer);
+  }
+
+  public async update({ body, params }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
+    const updatedOffer = this.offerService.updateById(params.id, body);
+
+    if (!updatedOffer) {
+      throw new HttpError(
+        StatusCodes.NOT_FOUND,
+        `Offer with id ${params.id} not found.`,
+        'OfferController'
+      );
+    }
+
+    this.ok(res, fillDTO(OfferRdo, updatedOffer));
   }
 }
