@@ -1,13 +1,13 @@
 import { inject, injectable } from 'inversify';
-import { Logger } from '../../libs/logger/index.js';
-import { Component } from '../../types/component.enum.js';
 import { DocumentType, mongoose, types } from '@typegoose/typegoose';
+
+import { Logger } from '../../libs/logger/index.js';
+import { Component, SortType } from '../../types/index.js';
 import { OfferEntity } from './offer.entity.js';
 import { OfferService } from './offer-service.interface.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { MAX_OFFER_COUNT, MAX_PREMIUM_OFFERS_COUNT } from './offer.constant.js';
-import { SortType } from '../../types/sort-type.enum.js';
 
 @injectable()
 export class DefaultOfferService implements OfferService {
@@ -45,7 +45,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
+  public async findPremiumByCity(city: string): Promise<DocumentType<OfferEntity>[]> {
     return this.offerModel
       .find({ city, isPremium: true })
       .sort({ createdAt: SortType.Down })

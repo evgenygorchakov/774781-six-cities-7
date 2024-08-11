@@ -25,9 +25,9 @@ export class OfferController extends BaseController {
 
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/:id', method: HttpMethod.Get, handler: this.showDetails });
-    this.addRoute({ path: '/:id', method: HttpMethod.Delete, handler: this.delete });
-    this.addRoute({ path: '/:id', method: HttpMethod.Patch, handler: this.update });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.showDetails });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete });
+    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update });
   }
 
   public async index(_req: Request, res: Response) {
@@ -42,13 +42,13 @@ export class OfferController extends BaseController {
   }
 
   public async showDetails({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
-    const { id } = params;
-    const offer = await this.offerService.findById(id);
+    const { offerId } = params;
+    const offer = await this.offerService.findById(offerId);
 
     if (! offer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id ${id} not found.`,
+        `Offer with id ${offerId} not found.`,
         'OfferController'
       );
     }
@@ -57,13 +57,13 @@ export class OfferController extends BaseController {
   }
 
   public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
-    const { id } = params;
-    const offer = await this.offerService.deleteById(id);
+    const { offerId } = params;
+    const offer = await this.offerService.deleteById(offerId);
 
     if (! offer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id ${id} not found.`,
+        `Offer with id ${offerId} not found.`,
         'OfferController'
       );
     }
@@ -72,12 +72,12 @@ export class OfferController extends BaseController {
   }
 
   public async update({ body, params }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
-    const updatedOffer = this.offerService.updateById(params.id, body);
+    const updatedOffer = this.offerService.updateById(params.offerId, body);
 
     if (!updatedOffer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
-        `Offer with id ${params.id} not found.`,
+        `Offer with id ${params.offerId} not found.`,
         'OfferController'
       );
     }
