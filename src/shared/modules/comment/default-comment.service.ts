@@ -1,13 +1,15 @@
+import { inject, injectable } from 'inversify';
 import { DocumentType, types } from '@typegoose/typegoose';
+
+import { Component } from '../../types/index.js';
 import { CommentService } from './comment-service.interface.js';
 import { CommentEntity } from './comment.entity.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
-import { injectable } from 'inversify';
 
 @injectable()
 export class DefaultCommentService implements CommentService {
   constructor(
-    private readonly commentModel: types.ModelType<CommentEntity>
+    @inject(Component.CommentModel) private readonly commentModel: types.ModelType<CommentEntity>
   ) {}
 
   public async create(dto: CreateCommentDto): Promise<DocumentType<CommentEntity>> {
@@ -28,5 +30,4 @@ export class DefaultCommentService implements CommentService {
 
     return result.deletedCount;
   }
-
 }

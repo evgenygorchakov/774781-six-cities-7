@@ -11,8 +11,6 @@ tags:
     description: Operations about user
   - name: offer
     description: Operations about offers
-  - name: comment
-    description: Operations about comments
 
 paths:
   /v1/user/register:
@@ -145,12 +143,20 @@ paths:
         "401":
           description: Unauthorized.
 
-  /v1/offer/{id}:
+  /v1/offer/{offerId}:
     put:
       tags:
         - offer
       summary: Update an existing offer
       description: Update an existing offer by Id
+      parameters:
+        - name: offerId
+          in: path
+          description: ID of offer to return
+          required: true
+          schema:
+            type: integer
+            format: int64
       requestBody:
         description: Update an existent offer
         content:
@@ -183,23 +189,77 @@ paths:
         - offer
       summary: Find offer by ID
       description: Returns a single offer
+      parameters:
+        - name: offerId
+          in: path
+          description: ID of offer to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Offer'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Offer'
+        '404':
+          description: Offer not found
+        "401":
+          description: Unauthorized
     delete:
       tags:
         - offer
       summary: Deletes an offer
       description: Delete an offer
       parameters:
-        - name: id
+        - name: offerId
           in: path
-          description: Offer id to delete
+          description: ID of offer to return
           required: true
           schema:
             type: integer
+            format: int64
       responses:
         '204':
           description: No content
         '404':
           description: Offer not found
+
+  /v1/offer/{offerId}/comments:
+    post:
+      tags:
+        - offer
+      summary: Get comments list
+      description: ''
+      parameters:
+        - name: offerId
+          in: path
+          description: ID of offer to return
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comment'
+        '404':
+          description: Offer with id not found.
 
   /v1/offers/{id}/favorite:
     get:
@@ -221,20 +281,6 @@ paths:
             type: string
           required: true
           description: Name of the city to get premium offers for.
-
-  /v1/comments:
-    get:
-      tags:
-        - comments
-      summary: Get comments
-      description: Get comments.
-
-  /v1/comments/{offerId}:
-    post:
-      tags:
-        - comments
-      summary: Add comment
-      description: Add comment.
 
 components:
   schemas:
@@ -320,6 +366,24 @@ components:
         longitude:
           type: number
           example: 6.959974
+
+    Comment:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+        text:
+          type: string
+          example: My first comment
+        rating:
+          type: number
+          example: 4.5
+        createdAt:
+          type: string
+          format: date-time
+        user:
+          $ref: '#/components/schemas/User'
 
     createUserRequest:
       type: object
