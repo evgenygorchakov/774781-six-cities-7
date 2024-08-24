@@ -9,7 +9,7 @@ import { OfferEntity, OfferModel } from './offer.entity.js';
 import { OfferController } from './offer.controller.js';
 
 export function createOfferContainer() {
-  const offerContainer = new Container;
+  const offerContainer = new Container();
 
   offerContainer
     .bind<OfferService>(Component.OfferService)
