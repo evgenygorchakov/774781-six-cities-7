@@ -7,4 +7,6 @@ export const Cities = {
   Dusseldorf: 'Dusseldorf',
 } as const;
 
+export const allowedCities = Object.values(Cities);
+
 export type City = keyof typeof Cities;

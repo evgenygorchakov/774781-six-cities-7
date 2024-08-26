@@ -1,9 +1,9 @@
 import { User } from '../user/index.js';
-import { Amenities } from './amenities.type.js';
-import { City } from './cities.enum.js';
+import { Amenity } from './amenities.js';
+import { City } from './cities.js';
 import { Coordinates } from './coordinates.type.js';
 import { Photos } from './photos.type.js';
-import { PropertyType } from './property-type.type.js';
+import { PropertyType } from './property-type.js';
 
 export type Offer = {
   title: string,
@@ -19,7 +19,7 @@ export type Offer = {
   roomsCount: number,
   guestsCount: number,
   price: number,
-  amenities: Amenities[],
+  amenities: Amenity[],
   user: User,
   coordinates: Coordinates,
 }

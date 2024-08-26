@@ -1,4 +1,4 @@
-import { Cities, City } from './cities.enum.js';
+import { Cities, City } from './cities.js';
 import { Coordinates } from './coordinates.type.js';
 
 export const CoordinatesCities: Record<City, Coordinates> = {

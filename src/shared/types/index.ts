@@ -1,13 +1,16 @@
 export { User, UserType } from './user/index.js';
 export {
-  Offer,
   PropertyType,
-  Amenities,
+  allowedPropertyTypes,
+  Amenity,
+  allowedAmenities,
   CoordinatesCities,
   Coordinates,
   Cities,
   City,
+  allowedCities,
   Photos,
+  Offer,
 } from './offer/index.js';
 
 export { MockServerData } from './mock-server-data.type.js';
