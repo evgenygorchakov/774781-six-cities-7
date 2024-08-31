@@ -1,5 +1,5 @@
 import {
-  Amenities,
+  Amenity,
   City,
   Coordinates,
   Photos,
@@ -20,7 +20,7 @@ export class UpdateOfferDto {
   public roomsCount?: number;
   public guestsCount?: number;
   public price?: number;
-  public amenities?: Amenities[];
+  public amenities?: Amenity[];
   public latitude?: Coordinates['latitude'];
   public longitude?: Coordinates['longitude'];
 }
