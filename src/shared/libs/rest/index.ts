@@ -9,3 +9,4 @@ export { AppExceptionFilter } from './exception-filter/app-exception-filter.js';
 export { HttpError } from './errors/index.js';
 export { Middleware } from './middleware/middleware.interface.js';
 export { ValidateObjectIdMiddleware } from './middleware/validate-object-id.middleware.js';
+export { ValidateDtoMiddleware } from './middleware/validate-dto.middleware.js';
