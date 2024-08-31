@@ -39,7 +39,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public preview: string;
 
-  @prop({ required: true })
+  @prop({ type: () => [String], required: true })
   public photos: Photos;
 
   @prop({ default: false })
@@ -63,7 +63,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({ required: true })
   public price: number;
 
-  @prop({ required: true })
+  @prop({ type: () => [String], required: true })
   public amenities: Amenity[];
 
   @prop({
@@ -72,10 +72,10 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   })
   public userId: Ref<UserEntity>;
 
-  @prop({ required: true })
+  @prop({ type: () => Number, required: true })
   public latitude: Coordinates['latitude'];
 
-  @prop({ required: true })
+  @prop({ type: () => Number, required: true })
   public longitude: Coordinates['longitude'];
 
   @prop({ default: 0 })
