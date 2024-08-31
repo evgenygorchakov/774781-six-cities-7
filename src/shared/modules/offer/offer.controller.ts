@@ -2,7 +2,13 @@ import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 
-import { BaseController, HttpError, HttpMethod, ValidateObjectIdMiddleware } from '../../libs/rest/index.js';
+import {
+  BaseController,
+  HttpError,
+  HttpMethod,
+  ValidateObjectIdMiddleware,
+} from '../../libs/rest/index.js';
+
 import { Logger } from '../../libs/logger/index.js';
 import { Component } from '../../types/index.js';
 import { fillDTO } from '../../helpers/index.js';
@@ -19,7 +25,8 @@ export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
-    @inject(Component.CommentService) private readonly commentService: CommentService,
+    @inject(Component.CommentService)
+    private readonly commentService: CommentService
   ) {
     super(logger);
 
@@ -58,17 +65,23 @@ export class OfferController extends BaseController {
     this.ok(res, fillDTO(OfferRdo, offers));
   }
 
-  public async create({ body }: CreateOfferRequest, res: Response): Promise<void> {
+  public async create(
+    { body }: CreateOfferRequest,
+    res: Response
+  ): Promise<void> {
     const result = await this.offerService.create(body);
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
   }
 
-  public async showDetails({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+  public async showDetails(
+    { params }: Request<ParamOfferId>,
+    res: Response
+  ): Promise<void> {
     const { offerId } = params;
     const offer = await this.offerService.findById(offerId);
 
-    if (! offer) {
+    if (!offer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${offerId} not found.`,
@@ -79,11 +92,14 @@ export class OfferController extends BaseController {
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+  public async delete(
+    { params }: Request<ParamOfferId>,
+    res: Response
+  ): Promise<void> {
     const { offerId } = params;
     const offer = await this.offerService.deleteById(offerId);
 
-    if (! offer) {
+    if (!offer) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${offerId} not found.`,
@@ -96,7 +112,10 @@ export class OfferController extends BaseController {
     this.noContent(res, offer);
   }
 
-  public async update({ body, params }: Request<ParamOfferId, unknown, UpdateOfferDto>, res: Response): Promise<void> {
+  public async update(
+    { body, params }: Request<ParamOfferId, unknown, UpdateOfferDto>,
+    res: Response
+  ): Promise<void> {
     const updatedOffer = this.offerService.updateById(params.offerId, body);
 
     if (!updatedOffer) {
@@ -110,10 +129,13 @@ export class OfferController extends BaseController {
     this.ok(res, fillDTO(OfferRdo, updatedOffer));
   }
 
-  public async getComments({ params }: Request<ParamOfferId>, res: Response):Promise<void> {
+  public async getComments(
+    { params }: Request<ParamOfferId>,
+    res: Response
+  ): Promise<void> {
     const { offerId } = params;
 
-    if (! await this.offerService.exist(offerId)) {
+    if (!(await this.offerService.exist(offerId))) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${offerId} not found.`,
