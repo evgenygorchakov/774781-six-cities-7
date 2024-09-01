@@ -57,7 +57,6 @@ export class CreateOfferDto {
   public preview: string;
 
   @IsArray({ message: CreateOfferValidationMessage.photos.invalidFormat })
-  @ArrayNotEmpty({ message: CreateOfferValidationMessage.photos.invalidFormat })
   @ArrayMinSize(6, { message: CreateOfferValidationMessage.photos.invalidFormat })
   @ArrayMaxSize(6, { message: CreateOfferValidationMessage.photos.invalidFormat })
   public photos: Photos;
