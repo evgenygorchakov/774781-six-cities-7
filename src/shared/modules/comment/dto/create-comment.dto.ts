@@ -16,7 +16,7 @@ export class CreateCommentDto {
 
   @IsNumber({}, { message: CreateCommentValidationMessage.common.number })
   @Min(1, { message: CreateCommentValidationMessage.rating.min })
-  @Max(1, { message: CreateCommentValidationMessage.rating.max })
+  @Max(5, { message: CreateCommentValidationMessage.rating.max })
   public rating: number;
 
   @IsMongoId()

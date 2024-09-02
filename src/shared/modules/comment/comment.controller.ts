@@ -12,7 +12,7 @@ import {
 import { Logger } from '../../libs/logger/index.js';
 import { OfferService } from '../offer/index.js';
 import { Component } from '../../types/index.js';
-// import { fillDTO } from '../../helpers/index.js';
+import { fillDTO } from '../../helpers/index.js';
 import { CommentService } from './comment-service.interface.js';
 import { CreateCommentRequest } from './types/create-comment-request.type.js';
 import { CreateCommentDto } from './dto/create-comment.dto.js';
@@ -50,7 +50,6 @@ export class CommentController extends BaseController {
 
     const comment = await this.commentService.create(body);
     await this.offerService.incCommentCount(body.offerId);
-    this.created(res, comment);
-    // this.created(res, fillDTO(, comment));
+    this.created(res, fillDTO(CreateCommentDto, comment));
   }
 }
