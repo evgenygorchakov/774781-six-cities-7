@@ -10,3 +10,4 @@ export { HttpError } from './errors/index.js';
 export { Middleware } from './middleware/middleware.interface.js';
 export { ValidateObjectIdMiddleware } from './middleware/validate-object-id.middleware.js';
 export { ValidateDtoMiddleware } from './middleware/validate-dto.middleware.js';
+export { DocumentExistMiddleware } from './middleware/document-exists.middleware.js';
