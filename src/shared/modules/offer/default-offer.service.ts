@@ -16,7 +16,7 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
   ) {}
 
-  public async exist(documentId: string): Promise<boolean> {
+  public async exists(documentId: string): Promise<boolean> {
     const offer = await this.offerModel.exists({ _id: documentId });
     return offer !== null;
   }
