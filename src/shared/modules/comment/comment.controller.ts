@@ -6,6 +6,7 @@ import {
   BaseController,
   HttpError,
   HttpMethod,
+  PrivateRouteMiddleware,
   ValidateDtoMiddleware,
 } from '../../libs/rest/index.js';
 
@@ -21,8 +22,7 @@ import { CreateCommentDto } from './dto/create-comment.dto.js';
 export class CommentController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
-    @inject(Component.CommentService)
-    private readonly commentService: CommentService,
+    @inject(Component.CommentService) private readonly commentService: CommentService,
     @inject(Component.OfferService) private readonly offerService: OfferService
   ) {
     super(logger);
@@ -32,7 +32,10 @@ export class CommentController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateCommentDto)],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateCommentDto)
+      ],
     });
   }
 
@@ -40,7 +43,7 @@ export class CommentController extends BaseController {
     { body, tokenPayload }: CreateCommentRequest,
     res: Response
   ): Promise<void> {
-    if (!(await this.offerService.exists(body.offerId))) {
+    if (! (await this.offerService.exists(body.offerId))) {
       throw new HttpError(
         StatusCodes.NOT_FOUND,
         `Offer with id ${body.offerId} not found.`,
