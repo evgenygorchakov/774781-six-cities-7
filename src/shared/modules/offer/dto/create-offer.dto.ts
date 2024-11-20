@@ -7,7 +7,6 @@ import {
   IsBoolean,
   IsInt,
   IsNumber,
-  IsMongoId,
   IsIn,
   IsString,
   IsArray,
