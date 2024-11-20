@@ -4,6 +4,7 @@ import { Request, Response } from 'express';
 import {
   BaseController,
   HttpMethod,
+  PrivateRouteMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware,
 } from '../../libs/rest/index.js';
@@ -26,19 +27,25 @@ export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
-    @inject(Component.CommentService)
-    private readonly commentService: CommentService
+    @inject(Component.CommentService) private readonly commentService: CommentService
   ) {
     super(logger);
-
     this.logger.info('Register routes for OfferController…');
 
-    this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.index });
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Get,
+      handler: this.index
+    });
+
     this.addRoute({
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)],
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)
+      ],
     });
 
     this.addRoute({
@@ -56,6 +63,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new DocumentExistMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
@@ -66,6 +74,7 @@ export class OfferController extends BaseController {
       method: HttpMethod.Patch,
       handler: this.update,
       middlewares: [
+        new PrivateRouteMiddleware(),
         new ValidateObjectIdMiddleware('offerId'),
         new ValidateDtoMiddleware(UpdateOfferDto),
         new DocumentExistMiddleware(this.offerService, 'Offer', 'offerId'),
@@ -89,10 +98,10 @@ export class OfferController extends BaseController {
   }
 
   public async create(
-    { body }: CreateOfferRequest,
+    { body, tokenPayload }: CreateOfferRequest,
     res: Response
   ): Promise<void> {
-    const result = await this.offerService.create(body);
+    const result = await this.offerService.create({...body, userId: tokenPayload.id });
     const offer = await this.offerService.findById(result.id);
     this.created(res, fillDTO(OfferRdo, offer));
   }

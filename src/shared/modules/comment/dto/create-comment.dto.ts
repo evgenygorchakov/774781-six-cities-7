@@ -22,6 +22,5 @@ export class CreateCommentDto {
   @IsMongoId()
   public offerId: string;
 
-  @IsMongoId({ message: CreateCommentValidationMessage.common.id })
   public userId: string;
 }

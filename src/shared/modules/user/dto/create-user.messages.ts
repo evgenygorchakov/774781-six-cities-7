@@ -6,10 +6,10 @@ export const CreateUserMessages = {
     invalidFormat: 'avatarPath is required',
   },
   firstName: {
-    invalidFormat: 'firstname is required',
+    invalidFormat: 'First name is required',
   },
   lastName: {
-    invalidFormat: 'lastname is required',
+    invalidFormat: 'Last name is required',
   },
   password: {
     invalidFormat: 'password is required',
