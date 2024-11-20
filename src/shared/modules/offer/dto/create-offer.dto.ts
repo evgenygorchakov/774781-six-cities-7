@@ -101,8 +101,6 @@ export class CreateOfferDto {
     { each: true, message: CreateOfferValidationMessage.amenities.invalidFormat })
   public amenities: Amenity[];
 
-  @IsString({ message: CreateOfferValidationMessage.common.string })
-  @IsMongoId({ message: CreateOfferValidationMessage.common.id })
   public userId: string;
 
   @IsNumber({}, { message: CreateOfferValidationMessage.common.number })
