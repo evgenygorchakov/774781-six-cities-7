@@ -5,7 +5,7 @@ import { createSecretKey } from 'node:crypto';
 
 import { TokenPayload } from '../../../modules/auth/index.js';
 import { Middleware } from './middleware.interface.js';
-import { HttpError } from '../errors/http-error.js';
+import { HttpError } from '../errors/index.js';
 
 function isTokenPayload(payload: unknown): payload is TokenPayload {
   return (
