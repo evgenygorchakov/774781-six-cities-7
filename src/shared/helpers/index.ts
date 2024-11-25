@@ -3,7 +3,7 @@ export {
   getRandomItems,
   getRandomItem,
   getErrorMessage,
-  CreateErrorObject,
+  createErrorObject,
   fillDTO,
   reduceValidationErrors,
 } from './common.js';

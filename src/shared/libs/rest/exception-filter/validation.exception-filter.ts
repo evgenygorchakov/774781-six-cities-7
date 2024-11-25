@@ -4,7 +4,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import { Component } from '../../../types/index.js';
 import { Logger } from '../../logger/index.js';
-import { CreateErrorObject } from '../../../helpers/index.js';
+import { createErrorObject } from '../../../helpers/index.js';
 import { ExceptionFilter } from './exception-filter.interface.js';
 import { ValidationError } from '../errors/validation.error.js';
 import { ApplicationError } from '../types/application-error.enum.js';
@@ -22,10 +22,10 @@ export class ValidationExceptionFilter implements ExceptionFilter {
 
     this.logger.error(`[ValidationException]: ${error.message}`, error);
 
-    error.details.forEach((errorFiled) => this.logger.warn(`[${errorField.property}] — ${errorField.messages}`));
+    error.details.forEach((errorField) => this.logger.warn(`[${errorField.property}] — ${errorField.messages}`));
 
     res
       .status(StatusCodes.BAD_REQUEST)
-      .json(CreateErrorObject(ApplicationError.ValidationError, error.message, error.details));
+      .json(createErrorObject(ApplicationError.ValidationError, error.message, error.details));
   }
 }
