@@ -18,6 +18,12 @@ export type RestSchema = {
 };
 
 export const configRestSchema = convict<RestSchema>({
+  HOST: {
+    doc: 'Host where started service',
+    format: String,
+    env: 'HOST',
+    default: 'localhost',
+  },
   PORT: {
     doc: 'Port for incoming connections',
     format: 'port',
@@ -29,6 +35,24 @@ export const configRestSchema = convict<RestSchema>({
     format: String,
     env: 'SALT',
     default: null,
+  },
+  UPLOAD_DIRECTORY: {
+    doc: 'Directory for upload files',
+    format: String,
+    env: 'UPLOAD_DIRECTORY',
+    default: null
+  },
+  JWT_SECRET: {
+    doc: 'Secret for sign JWT',
+    format: String,
+    env: 'JWT_SECRET',
+    default: null,
+  },
+  STATIC_DIRECTORY_PATH: {
+    doc: 'Path to directory with static resources',
+    format: String,
+    env: 'STATIC_DIRECTORY_PATH',
+    default: 'static',
   },
   DB_HOST: {
     doc: 'IP address of the database server (MongoDB)',
@@ -60,28 +84,4 @@ export const configRestSchema = convict<RestSchema>({
     env: 'DB_NAME',
     default: 'six-cities',
   },
-  UPLOAD_DIRECTORY: {
-    doc: 'Directory for upload files',
-    format: String,
-    env: 'UPLOAD_DIRECTORY',
-    default: null
-  },
-  JWT_SECRET: {
-    doc: 'Secret for sign JWT',
-    format: String,
-    env: 'JWT_SECRET',
-    default: null,
-  },
-  HOST: {
-    doc: 'Host where started service',
-    format: String,
-    env: 'HOST',
-    default: 'localhost',
-  },
-  STATIC_DIRECTORY_PATH: {
-    doc: 'Path to directory with static resources',
-    format: String,
-    env: 'STATIC_DIRECTORY_PATH',
-    default: 'static',
-  }
 });
