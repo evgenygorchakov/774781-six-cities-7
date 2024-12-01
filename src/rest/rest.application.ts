@@ -1,5 +1,6 @@
 import { injectable, inject } from 'inversify';
 import express, { Express } from 'express';
+import cors from 'cors';
 
 import { Config } from '../shared/libs/config/index.js';
 import { RestSchema } from '../shared/libs/config/index.js';
@@ -54,6 +55,7 @@ export class RestApplication {
     this.server.use(STATIC_UPLOAD_ROUTE, express.static(this.config.get('UPLOAD_DIRECTORY')));
     this.server.use(STATIC_FILES_ROUTE, express.static(this.config.get('STATIC_DIRECTORY_PATH')));
     this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.server.use(cors());
   }
 
   private async initExceptionFilters() {
