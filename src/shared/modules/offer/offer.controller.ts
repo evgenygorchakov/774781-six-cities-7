@@ -5,6 +5,7 @@ import {
   BaseController,
   HttpMethod,
   PrivateRouteMiddleware,
+  UploadFileMiddleware,
   ValidateDtoMiddleware,
   ValidateObjectIdMiddleware,
 } from '../../libs/rest/index.js';
@@ -14,6 +15,7 @@ import { Component } from '../../types/index.js';
 import { fillDTO } from '../../helpers/index.js';
 import { CommentRdo, CommentService } from '../comment/index.js';
 import { DocumentExistMiddleware } from '../../libs/rest/index.js';
+import { Config, RestSchema } from '../../libs/config/index.js';
 
 import { OfferService } from './offer-service.interface.js';
 import { OfferRdo } from './rdo/offer.rdo.js';
@@ -21,13 +23,15 @@ import { CreateOfferRequest } from './type/create-offer-request.type.js';
 import { ParamOfferId } from './type/param-offer-id.type.js';
 import { UpdateOfferDto } from './dto/update-offer.dto.js';
 import { CreateOfferDto } from './dto/create-offer.dto.js';
+import { UploadImageRdo } from './rdo/upload-image.rdo.js';
 
 @injectable()
 export class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected readonly logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
-    @inject(Component.CommentService) private readonly commentService: CommentService
+    @inject(Component.CommentService) private readonly commentService: CommentService,
+    @inject(Component.Config) private readonly configService: Config<RestSchema>
   ) {
     super(logger);
     this.logger.info('Register routes for OfferController…');
@@ -90,6 +94,17 @@ export class OfferController extends BaseController {
         new DocumentExistMiddleware(this.offerService, 'Offer', 'offerId'),
       ],
     });
+
+    this.addRoute({
+      path: '/:offerId/preview',
+      method: HttpMethod.Post,
+      handler: this.uploadImage,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateObjectIdMiddleware('offerId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'image'),
+      ]
+    });
   }
 
   public async index(_req: Request, res: Response) {
@@ -140,5 +155,12 @@ export class OfferController extends BaseController {
     const { offerId } = params;
     const comments = await this.commentService.findByOfferId(offerId);
     this.ok(res, fillDTO(CommentRdo, comments));
+  }
+
+  public async uploadImage({ params, file } : Request<ParamOfferId>, res: Response) {
+    const { offerId } = params;
+    const updateDto = { preview: file?.filename };
+    await this.offerService.updateById(offerId, updateDto);
+    this.created(res, fillDTO(UploadImageRdo, updateDto));
   }
 }

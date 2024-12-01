@@ -52,9 +52,6 @@ export class CreateOfferDto {
   )
   public city: City;
 
-  @IsString({ message: CreateOfferValidationMessage.common.string })
-  public preview: string;
-
   @IsArray({ message: CreateOfferValidationMessage.photos.invalidFormat })
   @ArrayMinSize(6, { message: CreateOfferValidationMessage.photos.invalidFormat })
   @ArrayMaxSize(6, { message: CreateOfferValidationMessage.photos.invalidFormat })

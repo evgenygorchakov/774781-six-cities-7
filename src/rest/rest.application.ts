@@ -64,9 +64,9 @@ export class RestApplication {
   }
 
   private async initControllers() {
-    this.server.use('/v1/offer', this.offerController.router);
-    this.server.use('/v1/user', this.userController.router);
-    this.server.use('/v1/comment', this.commentController.router);
+    this.server.use('/v1/offers', this.offerController.router);
+    this.server.use('/v1/users', this.userController.router);
+    this.server.use('/v1/comments', this.commentController.router);
   }
 
   public async init() {

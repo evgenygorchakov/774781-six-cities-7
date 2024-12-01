@@ -129,12 +129,12 @@ export class UpdateOfferDto {
   @IsOptional()
   @IsNumber({}, { message: CreateOfferValidationMessage.common.number })
   @IsLatitude({ message: CreateOfferValidationMessage.latitude.invalidFormat })
-  public latitude: Coordinates['latitude'];
+  public latitude?: Coordinates['latitude'];
 
   @IsOptional()
   @IsNumber({}, { message: CreateOfferValidationMessage.common.number })
   @IsLongitude({
     message: CreateOfferValidationMessage.longitude.invalidFormat,
   })
-  public longitude: Coordinates['longitude'];
+  public longitude?: Coordinates['longitude'];
 }
