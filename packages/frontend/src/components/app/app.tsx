@@ -11,11 +11,15 @@ import EditOffer from '../../pages/edit-offer/edit-offer';
 import NotFound from '../../pages/not-found/not-found';
 import PrivateRoute from '../private-route/private-route';
 import { AppRoute, AuthorizationStatus } from '../../const';
-import history from '../../history';
+// import history from '../../history';
 import Header from '../header/header';
 
+import { createBrowserHistory } from 'history';
+
+const bae = createBrowserHistory();
+
 const App = (): JSX.Element => (
-  <HistoryRouter history={history}>
+  <HistoryRouter history={bae}>
     <Routes>
       <Route element={<Header />}>
         <Route index element={<Main />} />

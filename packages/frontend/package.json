@@ -1,5 +1,6 @@
 {
-  "name": "Шесть городов",
+  "name": "frontend",
+  "description": "frontend for six cities project",
   "version": "0.3.0",
   "private": true,
   "dependencies": {
@@ -10,7 +11,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.2",
-    "react-router-dom": "^6.2.1",
+    "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.4.0",
     "react-toastify": "^9.0.8",
@@ -59,5 +60,8 @@
     "faker": "^5.5.3",
     "redux-devtools-extension": "2.13",
     "typescript": "^4.7.4"
-  }
+  },
+  "main": "index.js",
+  "author": "",
+  "license": "ISC"
 }
