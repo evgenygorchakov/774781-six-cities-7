@@ -1,15 +1,10 @@
-.vscode/
-/node_modules/
-/build/
-/lib/
-/dist/
-/docs/
-.idea/*
-
 .DS_Store
 coverage
 *.log
 .env
 
-/mocks/test-data.tsv
-/upload/
+node_modules
+build
+dist
+mocks
+upload
