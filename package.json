@@ -7,7 +7,13 @@
   "author": "Evgeny Gorchakov",
   "license": "ISC",
   "workspaces": [
-    "packages/backend",
-    "packages/frontend"
-  ]
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "server:dev": "npm run dev -w backend",
+    "server:build": "npm run build -w backend",
+    "server:lint": "npm run lint -w backend",
+    "server:mock:server": "npm run mock:server -w backend"
+  }
 }
