@@ -2,7 +2,9 @@
 
 ## Installation and Usage
 
-Prerequisites: [Node.js](https://nodejs.org/) `^20.9.0`
+Prerequisites:
+- [Node.js](https://nodejs.org/) `^20.9.0`
+- [Docker](https://www.docker.com/)
 
 build docker images:
 
@@ -28,4 +30,13 @@ start development server
 
 ```zsh
 npm run server:dev
+```
+
+## Optional step
+
+You can import some test data for quick start:
+
+```zsh
+cd ./server &&
+npm run ts ./src/main.cli.ts -- --import ./mocks/test-data.tsv admin admin localhost six-cities secret
 ```
